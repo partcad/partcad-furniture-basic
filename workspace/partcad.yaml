@@ -3,7 +3,7 @@ partcad: ">=0.5.0"
 #import:
 #  pub:
 #    type: git
-#    url: https://github.com/openvmp/partcad-index.git
+#    url: https://github.com/partcad/partcad-index.git
 
 assemblies:
   imperial-desk-1:
