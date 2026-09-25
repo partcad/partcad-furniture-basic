@@ -13,6 +13,16 @@
 {% set leg_length = param_height - top_thickness %}
 {% set x_apron = param_length - 2 * inset - 2 * post %}
 {% set y_apron = param_width - 2 * inset - 2 * post %}
+{# Refuse a desk the pieces cannot form: a top too small to span the legs and
+   an apron between them, or legs too short for an apron under the top. The
+   template has no way to raise an error of its own, so it calls a function
+   whose name is the message, and rendering stops there. #}
+{% if x_apron <= 0 or y_apron <= 0 %}
+{{ imperial_desk_1_length_and_width_must_be_more_than_11_in() }}
+{% endif %}
+{% if leg_length < apron_depth %}
+{{ imperial_desk_1_height_must_be_at_least_6_22_in() }}
+{% endif %}
 
 links:
   # The legs stand up: the post's length (Y) turned onto Z.

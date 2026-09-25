@@ -44,19 +44,19 @@ pc test -f manufacturability :imperial-desk-1
 
 ### apron
 <table><tr>
-<td valign=top><a href="apron.enrich"><img src="././apron.svg" alt="apron" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></a></td>
+<td valign=top><img src="././apron.svg" alt="apron" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
 <td valign=top>Apron, 2x6 cut to length</td>
 </tr></table>
 
 ### leg
 <table><tr>
-<td valign=top><a href="leg.enrich"><img src="././leg.svg" alt="leg" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></a></td>
+<td valign=top><img src="././leg.svg" alt="leg" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
 <td valign=top>Leg, 4x4 cut to length</td>
 </tr></table>
 
 ### top
 <table><tr>
-<td valign=top><a href="top.enrich"><img src="././top.svg" alt="top" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></a></td>
+<td valign=top><img src="././top.svg" alt="top" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
 <td valign=top>Top, 3/4 in. plywood cut to size</td>
 </tr></table>
 
