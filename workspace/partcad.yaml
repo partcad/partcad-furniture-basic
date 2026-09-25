@@ -14,6 +14,11 @@ docs:
     component, and the store's SKUs are what the lumber is bought as.
 
   usage: |
+    The bill of materials of the desk, with the lumber it is cut from, is
+    [imperial-desk-1.md](imperial-desk-1.md). The assembly instructions, which
+    open with the parts to cut and where to cut them, are
+    `pc render -t pdf -a :imperial-desk-1` (or `-t html`).
+
     ```shell
     pc inspect :imperial-desk-1
     pc inspect -p length=60 -p width=30 -p height=30 :imperial-desk-1
@@ -103,3 +108,9 @@ assemblies:
         type: float
         desc: The height of the top surface off the floor, in inches
         default: 30
+
+render:
+  readme:
+  svg:
+    # Checked in, so the same file every time it is rendered.
+    reproducible: true
