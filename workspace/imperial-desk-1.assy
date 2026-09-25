@@ -1,41 +1,56 @@
+# All the arithmetic is in inches and the locations are in millimetres.
+#
+# The desk stands on the XY plane, its length along X and its depth along Y,
+# with the top's front-left corner over the origin. Every component is modelled
+# in its stock's frame -- the width along X, the length along Y, the thickness
+# along Z, from the origin -- and is turned into place here.
+{% set mm = 25.4 %}
+{% set inset = 2.0 %}                    {# how far the legs sit in from the edge of the top #}
+{% set top_thickness = 0.75 - 1/32 %}    {# 3/4 in. nominal plywood #}
+{% set post = 3.5 %}                     {# a 4x4 #}
+{% set apron_thickness = 1.5 %}          {# a 2x6, on edge #}
+{% set apron_depth = 5.5 %}
+{% set leg_length = param_height - top_thickness %}
+{% set x_apron = param_length - 2 * inset - 2 * post %}
+{% set y_apron = param_width - 2 * inset - 2 * post %}
+
 links:
-  {% for x in [0, (param_length - 12.0)*25.4] %}
-  {% for y in [0, (param_width  - 12.0)*25.4] %}
-  - part: //pub/std/imperial/dimensional-lumber:lumber
+  # The legs stand up: the post's length (Y) turned onto Z.
+  {% for x in [inset, param_length - inset - post] %}
+  {% for y in [inset, param_width - inset - post] %}
+  - part: leg
     name: leg
-    location: [[{{x}}, {{y}}, 0], [1, 0, 0], -90]
+    location: [[{{ x * mm }}, {{ (y + post) * mm }}, 0], [1, 0, 0], 90]
     params:
-      height: 4
-      width: 4
-      length: {{ param_height }}
+      length: {{ leg_length }}
   {% endfor %}
   {% endfor %}
 
-  {% for x in [0, (param_length - 12.0 + (3.5-1.5))*25.4] %}
-  - part: //pub/std/imperial/dimensional-lumber:lumber
-    name: side-y
-    location: [[{{x}}, {{ 3.5*25.4 }}, 0], [0, 1, 0], 90]
+  # The front and back aprons run along X between the legs, flush with the legs'
+  # outer faces and with their tops under the top. The board's length (Y) goes
+  # to X, its width (X) up to Z and its thickness (Z) to Y.
+  {% for y in [inset, param_width - inset - apron_thickness] %}
+  - part: apron
+    name: apron-x
+    location: [[{{ (inset + post) * mm }}, {{ y * mm }}, {{ (leg_length - apron_depth) * mm }}], [-1, -1, -1], 120]
     params:
-      height: 2
-      width: 6
-      length: {{ param_width - 15.5 }}
+      length: {{ x_apron }}
   {% endfor %}
 
-  {% for y in [0, (param_width - 12.0 + (3.5-1.5))*25.4] %}
-  - part: //pub/std/imperial/dimensional-lumber:lumber
-    name: side-x
-    location: [[{{ 3.5*25.4 }}, {{y}}, -{{5.5*25.4}}], [-0.58, -0.58, -0.58], 120]
+  # The side aprons run along Y: the board's width (X) goes up to Z and its
+  # thickness (Z) to X.
+  {% for x in [inset + apron_thickness, param_length - inset] %}
+  - part: apron
+    name: apron-y
+    location: [[{{ x * mm }}, {{ (inset + post) * mm }}, {{ (leg_length - apron_depth) * mm }}], [0, 1, 0], -90]
     params:
-      height: 2
-      width: 6
-      length: {{ param_length - 15.5 }}
+      length: {{ y_apron }}
   {% endfor %}
 
-  - part: //pub/std/imperial/dimensional-lumber:plywood
+  # The top lies on the legs, its length (Y) turned onto X.
+  - part: top
     name: top
-    location: [[-{{4.25*25.4}}, -{{4.25*25.4}}, 0], [0, 0, 1], 0]
+    location: [[{{ param_length * mm }}, 0, {{ leg_length * mm }}], [0, 0, 1], 90]
     params:
-      length: {{ param_width }}
-      width: {{ param_length }}
-  
-
+      width: {{ param_width }}
+      length: {{ param_length }}
