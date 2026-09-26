@@ -45,11 +45,12 @@ parts:
       method: subtractive
       source: //pub/svc/commerce/homedepot:lumber/4x4x8
       cut:
+        # The saw travels along the post, pointing at the offcut...
+        toolAxis: +Y
         cuts:
-          # Across the post, '$length' inches from its end: the leg's own
-          # 'length', so every instance of it is cut where it is as long.
-          - along: +Y
-            length: $length in
+          # ...'$length' inches from its end: the leg's own 'length', so every
+          # instance of it is cut where it is as long.
+          - length: $length in
 
   # An apron: a 2x6 on edge between two legs, cut to length off an 8 ft. one.
   apron:
@@ -64,9 +65,9 @@ parts:
       method: subtractive
       source: //pub/svc/commerce/homedepot:lumber/2x6x8
       cut:
+        toolAxis: +Y
         cuts:
-          - along: +Y
-            length: $length in
+          - length: $length in
 
   # The top: a 3/4 in. plywood panel, cut to size out of a 4x8 sheet. Two cuts,
   # one across each dimension of the sheet.
@@ -83,9 +84,9 @@ parts:
       source: //pub/svc/commerce/homedepot:plywood/23-32x4x8
       cut:
         cuts:
-          - along: +X
+          - toolAxis: +X
             length: $width in
-          - along: +Y
+          - toolAxis: +Y
             length: $length in
 
 assemblies:
