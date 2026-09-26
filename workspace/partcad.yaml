@@ -1,20 +1,117 @@
-partcad: ">=0.5.0"
+partcad: ">=0.8.0"
+name: //pub/furniture/workspace/basic
+desc: Basic furniture for low demand workspace environments
 
-#import:
-#  pub:
-#    type: git
-#    url: https://github.com/partcad/partcad-index.git
+docs:
+  intro: |
+    Furniture made of dimensional lumber and plywood from The Home Depot, cut
+    to size with a saw and nothing else.
+
+    Every component is an instance of the standard size it is
+    (`//pub/std/imperial/dimensional-lumber`), and names the store product it is
+    cut from (`//pub/svc/commerce/homedepot`) as its stock, with where the saw
+    cuts it. `pc test` checks that cutting that product there leaves exactly the
+    component, and the store's SKUs are what the lumber is bought as.
+
+  usage: |
+    The bill of materials of the desk, with the lumber it is cut from, is
+    [imperial-desk-1.md](imperial-desk-1.md). The assembly instructions, which
+    open with the parts to cut and where to cut them, are
+    `pc render -t pdf -a :imperial-desk-1` (or `-t html`).
+
+    ```shell
+    pc inspect :imperial-desk-1
+    pc inspect -p length=60 -p width=30 -p height=30 :imperial-desk-1
+    pc test -f manufacturability :imperial-desk-1
+    ```
+
+dependencies:
+  pub:
+    onlyInRoot: true
+    type: git
+    url: https://github.com/partcad/partcad-index.git
+
+parts:
+  # A leg: a 4x4 post, cut to length off an 8 ft. one.
+  leg:
+    desc: Leg, 4x4 cut to length
+    type: enrich
+    source: //pub/std/imperial/dimensional-lumber:lumber
+    with:
+      width: 4
+      height: 4
+      length: 29.28125
+    manufacturing:
+      method: subtractive
+      source: //pub/svc/commerce/homedepot:lumber/4x4x8
+      cut:
+        # The saw travels along the post, pointing at the offcut...
+        toolAxis: +Y
+        cuts:
+          # ...'$length' inches from its end: the leg's own 'length', so every
+          # instance of it is cut where it is as long.
+          - length: $length in
+
+  # An apron: a 2x6 on edge between two legs, cut to length off an 8 ft. one.
+  apron:
+    desc: Apron, 2x6 cut to length
+    type: enrich
+    source: //pub/std/imperial/dimensional-lumber:lumber
+    with:
+      width: 6
+      height: 2
+      length: 28
+    manufacturing:
+      method: subtractive
+      source: //pub/svc/commerce/homedepot:lumber/2x6x8
+      cut:
+        toolAxis: +Y
+        cuts:
+          - length: $length in
+
+  # The top: a 3/4 in. plywood panel, cut to size out of a 4x8 sheet. Two cuts,
+  # one across each dimension of the sheet.
+  top:
+    desc: Top, 3/4 in. plywood cut to size
+    type: enrich
+    source: //pub/std/imperial/dimensional-lumber:plywood
+    with:
+      width: 36
+      length: 72
+      thickness: 0.75
+    manufacturing:
+      method: subtractive
+      source: //pub/svc/commerce/homedepot:plywood/23-32x4x8
+      cut:
+        cuts:
+          - toolAxis: +X
+            length: $width in
+          - toolAxis: +Y
+            length: $length in
 
 assemblies:
   imperial-desk-1:
     type: assy
+    desc: >
+      A desk: a 3/4 in. plywood top on four 4x4 legs, braced by a 2x6 apron on
+      each side. Everything is cut from 8 ft. lumber and a 4x8 sheet, so the top
+      is at most 48 x 96 in. and the desk at most 96 in. high.
     parameters:
       length:
         type: float
+        desc: The length of the top, in inches (at most 96)
         default: 72
       width:
         type: float
+        desc: The depth of the top, in inches (at most 48)
         default: 36
       height:
         type: float
-        default: 48
+        desc: The height of the top surface off the floor, in inches
+        default: 30
+
+render:
+  readme:
+  svg:
+    # Checked in, so the same file every time it is rendered.
+    reproducible: true
