@@ -1,4 +1,4 @@
-partcad: ">=0.8.0"
+partcad: ">=0.8.127"  # the `cut:` machine and procurement through stock
 name: //pub/furniture/workspace/basic
 desc: Basic furniture for low demand workspace environments
 
