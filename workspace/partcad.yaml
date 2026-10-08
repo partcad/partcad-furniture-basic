@@ -1,4 +1,4 @@
-partcad: ">=0.8.127"  # the `cut:` machine and procurement through stock
+partcad: ">=0.8.167"  # 'map:' on parts, and enrich port expressions over 'with'
 name: //pub/furniture/workspace/basic
 desc: Basic furniture for low demand workspace environments
 
