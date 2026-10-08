@@ -40,24 +40,69 @@ pc test -f manufacturability :imperial-desk-1
 </td>
 </tr></table>
 
+### imperial-desk-1/side
+<table><tr>
+<td valign=top><a href="imperial-desk-1/side.assy"><img src="././imperial-desk-1/side.svg" alt="imperial-desk-1/side" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></a></td>
+<td valign=top>An end of the desk: two legs joined by a side apron, flush with their tops. The desk takes two.
+</td>
+<td valign=top>Parameters:<br/><ul>
+<li>leg: 29.28125</li>
+<li>apron: 25</li>
+</ul>
+</td>
+</tr></table>
+
 ## Parts
 
 ### apron
 <table><tr>
 <td valign=top><img src="././apron.svg" alt="apron" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
 <td valign=top>Apron, 2x6 cut to length</td>
+<td valign=top>Parameters:<br/><ul>
+<li>width: <ul>
+<li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li><b>6</b></li>
+<li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>height: <ul>
+<li>1</li><li><b>2</b></li>
+<li>3</li><li>4</li><li>5</li><li>6</li><li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>length: 28.0</li>
+<li>tolerance: 1.6</li>
+</ul>
+</td>
 </tr></table>
 
 ### leg
 <table><tr>
 <td valign=top><img src="././leg.svg" alt="leg" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
 <td valign=top>Leg, 4x4 cut to length</td>
+<td valign=top>Parameters:<br/><ul>
+<li>width: <ul>
+<li>1</li><li>2</li><li>3</li><li><b>4</b></li>
+<li>5</li><li>6</li><li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>height: <ul>
+<li>1</li><li>2</li><li>3</li><li><b>4</b></li>
+<li>5</li><li>6</li><li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>length: 29.28125</li>
+<li>tolerance: 1.6</li>
+</ul>
+</td>
 </tr></table>
 
 ### top
 <table><tr>
 <td valign=top><img src="././top.svg" alt="top" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
 <td valign=top>Top, 3/4 in. plywood cut to size</td>
+<td valign=top>Parameters:<br/><ul>
+<li>width: 36.0</li>
+<li>length: 72.0</li>
+<li>thickness: 0.75</li>
+<li>tolerance: 0.8</li>
+</ul>
+</td>
 </tr></table>
 
 <br/><br/>
