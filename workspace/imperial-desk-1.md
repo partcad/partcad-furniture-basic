@@ -6,9 +6,17 @@ Package: `//pub/furniture/workspace/basic`
 
 <img src="././imperial-desk-1.svg" alt="imperial-desk-1" style="width: auto; height: auto; max-width: 200px; max-height: 200px;">
 
+## Sub-Assemblies
+
+### [//pub/furniture/workspace/basic](README.md)
+
+| Assembly | Count | Description |
+| --- | ---: | --- |
+| imperial-desk-1/side;apron=25.0,leg=29.28125 | 2 | An end of the desk: two legs joined by a side apron, flush with their tops. The desk takes two. |
+
 ## Parts
 
-### //pub/furniture/workspace/basic
+### [//pub/furniture/workspace/basic](README.md)
 
 | Part | Count | Description |
 | --- | ---: | --- |
@@ -25,7 +33,7 @@ What the manufactured parts are made from: one piece for each part made from it.
 
 | Stock | Count | For | Description |
 | --- | ---: | --- | --- |
-| lumber/2x6x8 | 4 | apron;length=61.0, apron;length=25.0 | 2 in. x 6 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
+| lumber/2x6x8 | 4 | apron;length=25.0, apron;length=61.0 | 2 in. x 6 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
 | lumber/4x4x8 | 4 | leg;length=29.28125 | 4 in. x 4 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
 | plywood/23-32x4x8 | 1 | top;length=72,width=36 | 23/32 in. x 4 ft. x 8 ft. BC Sanded Pine Plywood |
 

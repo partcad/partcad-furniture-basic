@@ -1,15 +1,14 @@
-# All the arithmetic is in inches and the locations are in millimetres.
+# All the arithmetic is in inches.
 #
-# The desk stands on the XY plane, its length along X and its depth along Y,
-# with the top's front-left corner over the origin. Every component is modelled
-# in its stock's frame -- the width along X, the length along Y, the thickness
-# along Z, from the origin -- and is turned into place here.
-{% set mm = 25.4 %}
-{% set inset = 2.0 %}                    {# how far the legs sit in from the edge of the top #}
+# Every component is joined through the ports it declares, so nothing here is a
+# coordinate. The desk is built from its top: it is in the top's frame, the
+# length along Y and the depth along X, standing down from the top's underside
+# at Z = 0. The two ends are the same frame (see 'imperial-desk-1/side'), the
+# right one turned half a turn, and the long aprons join the left one.
+{% set inset = 2.0 %}                    {# how far the legs sit in from the edge of the top, as its 'map:' says #}
 {% set top_thickness = 0.75 - 1/32 %}    {# 3/4 in. nominal plywood #}
 {% set post = 3.5 %}                     {# a 4x4 #}
-{% set apron_thickness = 1.5 %}          {# a 2x6, on edge #}
-{% set apron_depth = 5.5 %}
+{% set apron_depth = 5.5 %}              {# a 2x6, on edge #}
 {% set leg_length = param_height - top_thickness %}
 {% set x_apron = param_length - 2 * inset - 2 * post %}
 {% set y_apron = param_width - 2 * inset - 2 * post %}
@@ -25,42 +24,40 @@
 {% endif %}
 
 links:
-  # The legs stand up: the post's length (Y) turned onto Z.
-  {% for x in [inset, param_length - inset - post] %}
-  {% for y in [inset, param_width - inset - post] %}
-  - part: leg
-    name: leg
-    location: [[{{ x * mm }}, {{ (y + post) * mm }}, 0], [1, 0, 0], 90]
-    params:
-      length: {{ leg_length }}
-  {% endfor %}
-  {% endfor %}
-
-  # The front and back aprons run along X between the legs, flush with the legs'
-  # outer faces and with their tops under the top. The board's length (Y) goes
-  # to X, its width (X) up to Z and its thickness (Z) to Y.
-  {% for y in [inset, param_width - inset - apron_thickness] %}
-  - part: apron
-    name: apron-x
-    location: [[{{ (inset + post) * mm }}, {{ y * mm }}, {{ (leg_length - apron_depth) * mm }}], [-1, -1, -1], 120]
-    params:
-      length: {{ x_apron }}
-  {% endfor %}
-
-  # The side aprons run along Y: the board's width (X) goes up to Z and its
-  # thickness (Z) to X.
-  {% for x in [inset + apron_thickness, param_length - inset] %}
-  - part: apron
-    name: apron-y
-    location: [[{{ x * mm }}, {{ (inset + post) * mm }}, {{ (leg_length - apron_depth) * mm }}], [0, 1, 0], -90]
-    params:
-      length: {{ y_apron }}
-  {% endfor %}
-
-  # The top lies on the legs, its length (Y) turned onto X.
   - part: top
     name: top
-    location: [[{{ param_length * mm }}, 0, {{ leg_length * mm }}], [0, 0, 1], 90]
     params:
       width: {{ param_width }}
       length: {{ param_length }}
+
+  # The two ends, each standing on the top by its first leg.
+  {% for name, corner in [("left-side", "front-left-leg"), ("right-side", "back-right-leg")] %}
+  - assembly: imperial-desk-1/side
+    name: {{ name }}
+    params:
+      leg: {{ leg_length }}
+      apron: {{ y_apron }}
+    connectPorts:
+      with: leg-top
+      name: top
+      to: {{ corner }}
+      how:
+        # Set against it by hand.
+        pushForceMax: 20
+  {% endfor %}
+
+  # The front and back aprons run between the ends, flush with the legs'
+  # outer faces.
+  {% for name, rail, end in [("front-apron", "rail-1", "end-b"), ("back-apron", "rail-2", "end-a")] %}
+  - part: apron
+    name: {{ name }}
+    params:
+      length: {{ x_apron }}
+    connectPorts:
+      with: {{ end }}
+      name: left-side
+      to: {{ rail }}
+      how:
+        # Set against it by hand.
+        pushForceMax: 20
+  {% endfor %}

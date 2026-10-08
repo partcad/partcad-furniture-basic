@@ -1,0 +1,31 @@
+# The first leg is where the frame starts; the apron is joined to it, and the
+# second leg, turned a quarter turn, to the apron's other end.
+links:
+  - part: leg
+    name: leg-1
+    params:
+      length: {{ param_leg }}
+
+  - part: apron
+    name: apron
+    params:
+      length: {{ param_apron }}
+    connectPorts:
+      with: end-a
+      name: leg-1
+      to: rail-a
+      how:
+        # Set against it by hand.
+        pushForceMax: 20
+
+  - part: leg
+    name: leg-2
+    params:
+      length: {{ param_leg }}
+    connectPorts:
+      with: rail-b
+      name: apron
+      to: end-b
+      how:
+        # Set against it by hand.
+        pushForceMax: 20

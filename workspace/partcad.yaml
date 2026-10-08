@@ -1,4 +1,4 @@
-partcad: ">=0.8.127"  # the `cut:` machine and procurement through stock
+partcad: ">=0.8.167"  # 'map:' on parts, and enrich port expressions over 'with'
 name: //pub/furniture/workspace/basic
 desc: Basic furniture for low demand workspace environments
 
@@ -41,6 +41,14 @@ parts:
       width: 4
       height: 4
       length: 29.28125
+    # Where it is joined, named after corners of the post (see 'cuboid' in
+    # //pub/std/imperial/dimensional-lumber). The X = 0 and Z = 0 faces are the
+    # outside of the desk, and the aprons meet the other two flush with them
+    # and with the top of the leg.
+    map:
+      top: [y1-x0-z0]
+      rail-a: [x1-y1-z0]
+      rail-b: [z1-x0-y1]
     manufacturing:
       method: subtractive
       source: //pub/svc/commerce/homedepot:lumber/4x4x8
@@ -61,6 +69,11 @@ parts:
       width: 6
       height: 2
       length: 28
+    # Its two ends, by the corners of one long edge: the top outside one, once
+    # it is on edge between two legs.
+    map:
+      end-a: [y0-x0-z0]
+      end-b: [y1-x0-z0]
     manufacturing:
       method: subtractive
       source: //pub/svc/commerce/homedepot:lumber/2x6x8
@@ -79,6 +92,18 @@ parts:
       width: 36
       length: 72
       thickness: 0.75
+    # Where the legs go: 2 in. in from two corners of the underside, along
+    # both edges. The front of the desk is the panel's X = 0 edge and its left
+    # the Y = length one.
+    map:
+      front-left-leg:
+        port: z0-x0-y1
+        moveX: 50.8
+        moveY: 50.8
+      back-right-leg:
+        port: z0-x1-y0
+        moveX: 50.8
+        moveY: 50.8
     manufacturing:
       method: subtractive
       source: //pub/svc/commerce/homedepot:plywood/23-32x4x8
@@ -109,6 +134,28 @@ assemblies:
         type: float
         desc: The height of the top surface off the floor, in inches
         default: 30
+
+  # Both ends of the desk are the same frame, the right one turned half a turn.
+  imperial-desk-1/side:
+    type: assy
+    desc: >
+      An end of the desk: two legs joined by a side apron, flush with their
+      tops. The desk takes two.
+    parameters:
+      leg:
+        type: float
+        desc: The length of the legs, in inches
+        default: 29.28125
+      apron:
+        type: float
+        desc: The length of the apron between them, in inches
+        default: 25
+    # What the rest of the desk is joined to: the top of the first leg, and the
+    # face of each leg the long aprons meet.
+    map:
+      leg-top: [leg-1, top]
+      rail-1: [leg-1, rail-b]
+      rail-2: [leg-2, rail-a]
 
 render:
   readme:
