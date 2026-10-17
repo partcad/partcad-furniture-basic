@@ -13,10 +13,12 @@ component, and the store's SKUs are what the lumber is bought as.
 
 
 ## Usage
-The bill of materials of the desk, with the lumber it is cut from, is
-[imperial-desk-1.md](imperial-desk-1.md). The assembly instructions, which
-open with the parts to cut and where to cut them, are
-`pc render -t pdf -a :imperial-desk-1` (or `-t html`).
+The bill of materials of the desk, with the lumber and the screws it is
+made of, is [imperial-desk-1.md](imperial-desk-1.md). The assembly
+instructions are [imperial-desk-1.pdf](imperial-desk-1.pdf): the parts to
+cut and where to cut them, the two end frames, and the desk put together
+from them, each step with the screws that hold it. `pc render` writes it
+with the rest (or `pc render -t html -a :imperial-desk-1` for a web page).
 
 ```shell
 pc inspect :imperial-desk-1
@@ -30,7 +32,7 @@ pc test -f manufacturability :imperial-desk-1
 ### imperial-desk-1
 <table><tr>
 <td valign=top><a href="imperial-desk-1.assy"><img src="././imperial-desk-1.svg" alt="imperial-desk-1" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></a></td>
-<td valign=top>A desk: a 3/4 in. plywood top on four 4x4 legs, braced by a 2x6 apron on each side. Everything is cut from 8 ft. lumber and a 4x8 sheet, so the top is at most 48 x 96 in. and the desk at most 96 in. high.
+<td valign=top>A desk: a 3/4 in. plywood top on four 4x4 legs, braced by a 2x6 apron on each side and screwed together. Everything is cut from 8 ft. lumber and a 4x8 sheet, so the top is at most 48 x 96 in. and the desk at most 96 in. high.
 </td>
 <td valign=top>Parameters:<br/><ul>
 <li>length: 72</li>
@@ -43,7 +45,7 @@ pc test -f manufacturability :imperial-desk-1
 ### imperial-desk-1/side
 <table><tr>
 <td valign=top><a href="imperial-desk-1/side.assy"><img src="././imperial-desk-1/side.svg" alt="imperial-desk-1/side" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></a></td>
-<td valign=top>An end of the desk: two legs joined by a side apron, flush with their tops. The desk takes two.
+<td valign=top>An end of the desk: two legs joined by a side apron, flush with their tops and their outside faces and screwed through the legs. The desk takes two.
 </td>
 <td valign=top>Parameters:<br/><ul>
 <li>leg: 29.28125</li>
@@ -53,25 +55,6 @@ pc test -f manufacturability :imperial-desk-1
 </tr></table>
 
 ## Parts
-
-### apron
-<table><tr>
-<td valign=top><img src="././apron.svg" alt="apron" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
-<td valign=top>Apron, 2x6 cut to length</td>
-<td valign=top>Parameters:<br/><ul>
-<li>width: <ul>
-<li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li><b>6</b></li>
-<li>8</li><li>10</li><li>12</li></ul>
-</li>
-<li>height: <ul>
-<li>1</li><li><b>2</b></li>
-<li>3</li><li>4</li><li>5</li><li>6</li><li>8</li><li>10</li><li>12</li></ul>
-</li>
-<li>length: 28.0</li>
-<li>tolerance: 1.6</li>
-</ul>
-</td>
-</tr></table>
 
 ### leg
 <table><tr>
@@ -87,6 +70,44 @@ pc test -f manufacturability :imperial-desk-1
 <li>5</li><li>6</li><li>8</li><li>10</li><li>12</li></ul>
 </li>
 <li>length: 29.28125</li>
+<li>tolerance: 1.6</li>
+</ul>
+</td>
+</tr></table>
+
+### long-apron
+<table><tr>
+<td valign=top><img src="././long-apron.svg" alt="long-apron" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
+<td valign=top>Long apron, 2x6 cut to length</td>
+<td valign=top>Parameters:<br/><ul>
+<li>width: <ul>
+<li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li><b>6</b></li>
+<li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>height: <ul>
+<li>1</li><li><b>2</b></li>
+<li>3</li><li>4</li><li>5</li><li>6</li><li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>length: 61.0</li>
+<li>tolerance: 1.6</li>
+</ul>
+</td>
+</tr></table>
+
+### side-apron
+<table><tr>
+<td valign=top><img src="././side-apron.svg" alt="side-apron" style="width: auto; height: auto; max-width: 200px; max-height: 200px;"></td>
+<td valign=top>Side apron, 2x6 cut to length</td>
+<td valign=top>Parameters:<br/><ul>
+<li>width: <ul>
+<li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li><b>6</b></li>
+<li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>height: <ul>
+<li>1</li><li><b>2</b></li>
+<li>3</li><li>4</li><li>5</li><li>6</li><li>8</li><li>10</li><li>12</li></ul>
+</li>
+<li>length: 25.0</li>
 <li>tolerance: 1.6</li>
 </ul>
 </td>

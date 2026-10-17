@@ -1,10 +1,19 @@
-# All the arithmetic is in inches.
+description: |
+  The desk is built standing on its feet: the two end frames, the long aprons
+  between them, and the top on the frame. Every joint is screwed.
+
+# All the arithmetic is in inches, and the screws' places in millimetres.
 #
 # Every component is joined through the ports it declares, so nothing here is a
-# coordinate. The desk is built from its top: it is in the top's frame, the
-# length along Y and the depth along X, standing down from the top's underside
-# at Z = 0. The two ends are the same frame (see 'imperial-desk-1/side'), the
-# right one turned half a turn, and the long aprons join the left one.
+# coordinate. The desk is built from its left end frame, the way it is put
+# together: the long aprons are joined to it, the right end to them, and the top
+# goes on last. The frame is in the left end's frame, which is its first leg's -
+# the leg's length along Y - so the root of this file stands it up: a third of a
+# turn about the diagonal (X to Y, Y to Z, Z to X) puts the legs along Z, the
+# floor at Z = 0, the front of the desk towards -Y and its left towards -X, which
+# is the side and the end a drawing of it is looked at from. The two ends are the
+# same frame (see 'imperial-desk-1/side'), the right one turned half a turn.
+{% set inch = 25.4 %}
 {% set inset = 2.0 %}                    {# how far the legs sit in from the edge of the top, as its 'map:' says #}
 {% set top_thickness = 0.75 - 1/32 %}    {# 3/4 in. nominal plywood #}
 {% set post = 3.5 %}                     {# a 4x4 #}
@@ -22,42 +31,134 @@
 {% if leg_length < apron_depth %}
 {{ imperial_desk_1_height_must_be_at_least_6_22_in() }}
 {% endif %}
-
-links:
-  - part: top
-    name: top
-    params:
-      width: {{ param_width }}
-      length: {{ param_length }}
-
-  # The two ends, each standing on the top by its first leg.
-  {% for name, corner in [("left-side", "front-left-leg"), ("right-side", "back-right-leg")] %}
-  - assembly: imperial-desk-1/side
+{#- The screws. A 6 in. timber screw goes through a 3-1/2 in. leg and 2-1/2 in.
+    into the end of a long apron; a 2 in. wood screw through the 23/32 in. top
+    and the rest of the way into the top edge of one. -#}
+{% set timber_screw = "//pub/svc/commerce/homedepot:screws/sdws22600db" %}
+{% set wood_screw = "//pub/svc/commerce/homedepot:screws/spax-8x2" %}
+{% macro screw(part, name, apron, port, from_edge, drive, through, description=None) %}
+  - part: {{ part }}
     name: {{ name }}
+    {% if description %}
+    description: {{ description | tojson }}
+    {% endif %}
+    connect:
+      withPort: tip
+      name: {{ apron }}
+      to: //pub/std/imperial/dimensional-lumber:cuboid
+      toPort: {{ port }}
+      toParams:
+        fromEdge: {{ from_edge * inch }}
+        drive: {{ drive * inch }}
+      interferes: {{ through }}
+      how:
+        # Driven with an impact driver; it cuts its own thread.
+        selfScrew: true
+{% endmacro %}
+{#- Two screws through a leg into the end of a long apron, 2 in. and 4-1/2 in.
+    below the top: between the two that hold the side apron, which are 1 in.
+    and 3-1/2 in. below it, so that the screws in one leg miss each other. -#}
+{% macro end_screws(apron, end, port, through, description=None) %}
+{{ screw(timber_screw, apron ~ "-" ~ end ~ "-screw-1", apron, port, 2, 6 - post, through, description) }}
+{{ screw(timber_screw, apron ~ "-" ~ end ~ "-screw-2", apron, port, 4.5, 6 - post, through) }}
+{% endmacro %}
+
+location: [[0, 0, 0], [1, 1, 1], 120]
+links:
+  - assembly: imperial-desk-1/side
+    name: left-side
+    description: >-
+      Stand an end frame on its feet, with its outside face (the one the apron
+      is flush with) to the left. Have a helper hold it.
+    params:
+      leg: {{ leg_length }}
+      apron: {{ y_apron }}
+
+  # The long aprons run between the ends, flush with the legs' outer faces and
+  # their tops.
+  - part: long-apron
+    name: front-apron
+    description: >-
+      Butt a long apron against the inside face of the front leg, flush with the
+      front of the leg and with its top.
+    params:
+      length: {{ x_apron }}
+    connectPorts:
+      with: end-b
+      name: left-side
+      to: rail-1
+      how:
+        # Set against it by hand.
+        pushForceMax: 20
+{{ end_screws("front-apron", "left", "y1-x0", "left-side", "Drive two screws through the leg, from the outside of the desk, into the end of the apron, 2 in. and 4-1/2 in. below the top and 3/4 in. in from the front.") }}
+
+  - part: long-apron
+    name: back-apron
+    description: >-
+      Butt the other long apron against the back leg the same way, flush with
+      the back of the leg and with its top.
+    params:
+      length: {{ x_apron }}
+    connectPorts:
+      with: end-a
+      name: left-side
+      to: rail-2
+      how:
+        # Set against it by hand.
+        pushForceMax: 20
+{{ end_screws("back-apron", "left", "y0-x0", "left-side", "Screw it on the same way.") }}
+
+  # The right end goes on the far ends of the long aprons: it is placed by the
+  # back one, and meets the front one there too.
+  - assembly: imperial-desk-1/side
+    name: right-side
+    description: >-
+      Stand the other end frame against the free ends of the long aprons, with
+      its outside face to the right, flush with the aprons' tops.
     params:
       leg: {{ leg_length }}
       apron: {{ y_apron }}
     connectPorts:
-      with: leg-top
-      name: top
-      to: {{ corner }}
+      with: rail-1
+      name: back-apron
+      to: end-b
       how:
-        # Set against it by hand.
+        # Set against them by hand.
         pushForceMax: 20
-  {% endfor %}
+    alsoConnectPorts:
+      with: rail-2
+      name: front-apron
+      to: end-a
+{{ end_screws("front-apron", "right", "y0-x0", "right-side", "Screw both of its legs to the aprons, two screws each, the same way as on the left.") }}
+{{ end_screws("back-apron", "right", "y1-x0", "right-side") }}
 
-  # The front and back aprons run between the ends, flush with the legs'
-  # outer faces.
-  {% for name, rail, end in [("front-apron", "rail-1", "end-b"), ("back-apron", "rail-2", "end-a")] %}
-  - part: apron
-    name: {{ name }}
+  # The top rests on all four legs and both long aprons. It is placed by the
+  # front left leg and meets the back right one as well.
+  - part: top
+    name: top
+    description: >-
+      Lay the top on the frame, good face up, with 2 in. of overhang beyond the
+      legs on every side.
     params:
-      length: {{ x_apron }}
+      width: {{ param_width }}
+      length: {{ param_length }}
     connectPorts:
-      with: {{ end }}
+      with: front-left-leg
       name: left-side
-      to: {{ rail }}
+      to: leg-top
       how:
-        # Set against it by hand.
+        # Laid on by hand.
         pushForceMax: 20
+    alsoConnectPorts:
+      with: back-right-leg
+      name: right-side
+      to: leg-top
+
+  # Three screws into each long apron, down its middle: 6 in. from either end
+  # and halfway along. The top edge of an apron is its X = 0 face, and its
+  # left end (end-a's) the Y = 0 one.
+  {% for apron in ["front-apron", "back-apron"] %}
+  {% for from_edge in [6, x_apron / 2, x_apron - 6] %}
+{{ screw(wood_screw, apron ~ "-top-screw-" ~ loop.index, apron, "x0-y0", from_edge, 2 - top_thickness, "top", "Drive three screws through the top into each long apron, 2-3/4 in. in from the edge of the top: 6 in. from each end of the apron and one halfway along. Sink the heads flush." if loop.first and apron == "front-apron" else None) }}
+  {% endfor %}
   {% endfor %}

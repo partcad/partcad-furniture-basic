@@ -1,13 +1,54 @@
+description: |
+  An end frame, built flat on the floor with its outside face down.
+
 # The first leg is where the frame starts; the apron is joined to it, and the
-# second leg, turned a quarter turn, to the apron's other end.
+# second leg, turned a quarter turn, to the apron's other end. Each joint is
+# held by two timber screws, driven through the leg into the end of the apron.
+#
+# A screw is placed by the lumber's own ports (see 'cuboid' in
+# //pub/std/imperial/dimensional-lumber): the middle of the top edge of the
+# apron's end, moved down the middle of that end by 'fromEdge' and into it by
+# 'drive', so that a 6 in. screw driven 2-1/2 in. into the apron has its head on
+# the far face of the 3-1/2 in. leg.
+{% set inch = 25.4 %}
+{% set screw = "//pub/svc/commerce/homedepot:screws/sdws22600db" %}
+{% set screw_drive = (6 - 3.5) * inch %}
+{% macro screws(end, port, leg, description) %}
+  {% for depth in [1, 3.5] %}
+  - part: {{ screw }}
+    name: {{ end }}-screw-{{ loop.index }}
+    {% if loop.first %}
+    description: {{ description | tojson }}
+    {% endif %}
+    connect:
+      withPort: tip
+      name: apron
+      to: //pub/std/imperial/dimensional-lumber:cuboid
+      toPort: {{ port }}
+      toParams:
+        fromEdge: {{ depth * inch }}
+        drive: {{ screw_drive }}
+      interferes: {{ leg }}
+      how:
+        # Driven with an impact driver; it cuts its own thread.
+        selfScrew: true
+  {% endfor %}
+{% endmacro %}
+
 links:
   - part: leg
     name: leg-1
+    description: >-
+      Lay a leg on the floor. The face on the floor will be the outside of the
+      desk.
     params:
       length: {{ param_leg }}
 
-  - part: apron
+  - part: side-apron
     name: apron
+    description: >-
+      Lay the side apron flat on the floor and butt its end against the side of
+      the leg, flush with the top end of the leg.
     params:
       length: {{ param_apron }}
     connectPorts:
@@ -17,9 +58,13 @@ links:
       how:
         # Set against it by hand.
         pushForceMax: 20
+{{ screws("end-a", "y0-x0", "leg-1", "Drive two screws through the leg into the end of the apron, 1 in. and 3-1/2 in. from the top end of the leg and 3/4 in. up from the floor.") }}
 
   - part: leg
     name: leg-2
+    description: >-
+      Butt the second leg against the other end of the apron the same way, its
+      top end flush with the first leg's.
     params:
       length: {{ param_leg }}
     connectPorts:
@@ -29,3 +74,4 @@ links:
       how:
         # Set against it by hand.
         pushForceMax: 20
+{{ screws("end-b", "y1-x0", "leg-2", "Drive two screws through this leg into the apron the same way.") }}

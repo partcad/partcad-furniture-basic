@@ -1,6 +1,6 @@
 # imperial-desk-1
 
-A desk: a 3/4 in. plywood top on four 4x4 legs, braced by a 2x6 apron on each side. Everything is cut from 8 ft. lumber and a 4x8 sheet, so the top is at most 48 x 96 in. and the desk at most 96 in. high.
+A desk: a 3/4 in. plywood top on four 4x4 legs, braced by a 2x6 apron on each side and screwed together. Everything is cut from 8 ft. lumber and a 4x8 sheet, so the top is at most 48 x 96 in. and the desk at most 96 in. high.
 
 Package: `//pub/furniture/workspace/basic`
 
@@ -12,7 +12,7 @@ Package: `//pub/furniture/workspace/basic`
 
 | Assembly | Count | Description |
 | --- | ---: | --- |
-| imperial-desk-1/side;apron=25.0,leg=29.28125 | 2 | An end of the desk: two legs joined by a side apron, flush with their tops. The desk takes two. |
+| imperial-desk-1/side;apron=25.0,leg=29.28125 | 2 | An end of the desk: two legs joined by a side apron, flush with their tops and their outside faces and screwed through the legs. The desk takes two. |
 
 ## Parts
 
@@ -20,10 +20,17 @@ Package: `//pub/furniture/workspace/basic`
 
 | Part | Count | Description |
 | --- | ---: | --- |
-| apron;length=25.0 | 2 | Apron, 2x6 cut to length |
-| apron;length=61.0 | 2 | Apron, 2x6 cut to length |
 | leg;length=29.28125 | 4 | Leg, 4x4 cut to length |
+| long-apron;length=61.0 | 2 | Long apron, 2x6 cut to length |
+| side-apron;length=25.0 | 2 | Side apron, 2x6 cut to length |
 | top;length=72,width=36 | 1 | Top, 3/4 in. plywood cut to size |
+
+### //pub/svc/commerce/homedepot
+
+| Part | Count | Description |
+| --- | ---: | --- |
+| screws/sdws22600db | 16 | Simpson Strong-Tie 0.220 in. x 6 in. T40 Washer Head Strong-Drive SDWS Timber Screw, Exterior Grade (12-Pack) |
+| screws/spax-8x2 | 6 | SPAX #8 x 2 in. T-Star Plus Drive Flat-Head Partial Thread Yellow Zinc Coated Multi-Material Screw (161-Box) |
 
 ## Stock
 
@@ -33,7 +40,7 @@ What the manufactured parts are made from: one piece for each part made from it.
 
 | Stock | Count | For | Description |
 | --- | ---: | --- | --- |
-| lumber/2x6x8 | 4 | apron;length=25.0, apron;length=61.0 | 2 in. x 6 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
+| lumber/2x6x8 | 4 | side-apron;length=25.0, long-apron;length=61.0 | 2 in. x 6 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
 | lumber/4x4x8 | 4 | leg;length=29.28125 | 4 in. x 4 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
 | plywood/23-32x4x8 | 1 | top;length=72,width=36 | 23/32 in. x 4 ft. x 8 ft. BC Sanded Pine Plywood |
 

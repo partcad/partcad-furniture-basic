@@ -14,10 +14,12 @@ docs:
     component, and the store's SKUs are what the lumber is bought as.
 
   usage: |
-    The bill of materials of the desk, with the lumber it is cut from, is
-    [imperial-desk-1.md](imperial-desk-1.md). The assembly instructions, which
-    open with the parts to cut and where to cut them, are
-    `pc render -t pdf -a :imperial-desk-1` (or `-t html`).
+    The bill of materials of the desk, with the lumber and the screws it is
+    made of, is [imperial-desk-1.md](imperial-desk-1.md). The assembly
+    instructions are [imperial-desk-1.pdf](imperial-desk-1.pdf): the parts to
+    cut and where to cut them, the two end frames, and the desk put together
+    from them, each step with the screws that hold it. `pc render` writes it
+    with the rest (or `pc render -t html -a :imperial-desk-1` for a web page).
 
     ```shell
     pc inspect :imperial-desk-1
@@ -60,17 +62,39 @@ parts:
           # instance of it is cut where it is as long.
           - length: $length in
 
-  # An apron: a 2x6 on edge between two legs, cut to length off an 8 ft. one.
-  apron:
-    desc: Apron, 2x6 cut to length
+  # The aprons: 2x6 on edge between two legs, cut to length off an 8 ft. one.
+  # The two ends of the desk each have a short one, and the long ones run
+  # between the ends; the two are the same board cut to different lengths, and
+  # two parts so that the cut list and the steps say which is which.
+  side-apron:
+    desc: Side apron, 2x6 cut to length
     type: enrich
     source: //pub/std/imperial/dimensional-lumber:lumber
     with:
       width: 6
       height: 2
-      length: 28
+      length: 25
     # Its two ends, by the corners of one long edge: the top outside one, once
     # it is on edge between two legs.
+    map:
+      end-a: [y0-x0-z0]
+      end-b: [y1-x0-z0]
+    manufacturing:
+      method: subtractive
+      source: //pub/svc/commerce/homedepot:lumber/2x6x8
+      cut:
+        toolAxis: +Y
+        cuts:
+          - length: $length in
+
+  long-apron:
+    desc: Long apron, 2x6 cut to length
+    type: enrich
+    source: //pub/std/imperial/dimensional-lumber:lumber
+    with:
+      width: 6
+      height: 2
+      length: 61
     map:
       end-a: [y0-x0-z0]
       end-b: [y1-x0-z0]
@@ -119,8 +143,9 @@ assemblies:
     type: assy
     desc: >
       A desk: a 3/4 in. plywood top on four 4x4 legs, braced by a 2x6 apron on
-      each side. Everything is cut from 8 ft. lumber and a 4x8 sheet, so the top
-      is at most 48 x 96 in. and the desk at most 96 in. high.
+      each side and screwed together. Everything is cut from 8 ft. lumber and a
+      4x8 sheet, so the top is at most 48 x 96 in. and the desk at most 96 in.
+      high.
     parameters:
       length:
         type: float
@@ -134,13 +159,18 @@ assemblies:
         type: float
         desc: The height of the top surface off the floor, in inches
         default: 30
+    render:
+      # The assembly instructions, checked in beside it.
+      pdf:
+        reproducible: true
 
   # Both ends of the desk are the same frame, the right one turned half a turn.
   imperial-desk-1/side:
     type: assy
     desc: >
       An end of the desk: two legs joined by a side apron, flush with their
-      tops. The desk takes two.
+      tops and their outside faces and screwed through the legs. The desk takes
+      two.
     parameters:
       leg:
         type: float
