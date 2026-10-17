@@ -13,6 +13,12 @@ description: |
 {% set inch = 25.4 %}
 {% set screw = "//pub/svc/commerce/homedepot:screws/sdws22600db" %}
 {% set screw_drive = (6 - 3.5) * inch %}
+{# The screws go 2-1/2 in. into either end of the apron, so a shorter apron
+   than both of those together cannot take them. The template cannot raise an
+   error of its own, so it calls a function whose name is the message. #}
+{% if param_apron < 5 %}
+{{ imperial_desk_1_side_apron_must_be_at_least_5_in() }}
+{% endif %}
 {% macro screws(end, port, leg, description) %}
   {% for depth in [1, 3.5] %}
   - part: {{ screw }}

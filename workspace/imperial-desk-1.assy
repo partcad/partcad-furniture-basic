@@ -22,11 +22,12 @@ description: |
 {% set x_apron = param_length - 2 * inset - 2 * post %}
 {% set y_apron = param_width - 2 * inset - 2 * post %}
 {# Refuse a desk the pieces cannot form: a top too small to span the legs and
-   an apron between them, or legs too short for an apron under the top. The
-   template has no way to raise an error of its own, so it calls a function
-   whose name is the message, and rendering stops there. #}
-{% if x_apron <= 0 or y_apron <= 0 %}
-{{ imperial_desk_1_length_and_width_must_be_more_than_11_in() }}
+   an apron between them that two screws can go into from either end (2-1/2
+   in. each), or legs too short for an apron under the top. The template has
+   no way to raise an error of its own, so it calls a function whose name is
+   the message, and rendering stops there. #}
+{% if x_apron < 5 or y_apron < 5 %}
+{{ imperial_desk_1_length_and_width_must_be_at_least_16_in() }}
 {% endif %}
 {% if leg_length < apron_depth %}
 {{ imperial_desk_1_height_must_be_at_least_6_22_in() }}
@@ -155,10 +156,12 @@ links:
       to: leg-top
 
   # Three screws into each long apron, down its middle: 6 in. from either end
-  # and halfway along. The top edge of an apron is its X = 0 face, and its
-  # left end (end-a's) the Y = 0 one.
+  # - or a quarter of the way along, on an apron too short for that - and
+  # halfway along. The top edge of an apron is its X = 0 face, and its left
+  # end (end-a's) the Y = 0 one.
+  {% set end_inset = [6, x_apron / 4] | min %}
   {% for apron in ["front-apron", "back-apron"] %}
-  {% for from_edge in [6, x_apron / 2, x_apron - 6] %}
+  {% for from_edge in [end_inset, x_apron / 2, x_apron - end_inset] %}
 {{ screw(wood_screw, apron ~ "-top-screw-" ~ loop.index, apron, "x0-y0", from_edge, 2 - top_thickness, "top", "Drive three screws through the top into each long apron, 2-3/4 in. in from the edge of the top: 6 in. from each end of the apron and one halfway along. Sink the heads flush." if loop.first and apron == "front-apron" else None) }}
   {% endfor %}
   {% endfor %}
