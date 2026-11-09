@@ -36,13 +36,13 @@ Package: `//pub/furniture/workspace/basic`
 
 What the manufactured parts are made from: one piece for each part made from it.
 
-### //pub/svc/commerce/homedepot
+### //pub/std/imperial/dimensional-lumber/stock
 
 | Stock | Count | For | Description |
 | --- | ---: | --- | --- |
-| lumber/2x6x8 | 4 | side-apron;length=25.0, long-apron;length=61.0 | 2 in. x 6 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
-| lumber/4x4x8 | 4 | leg;length=29.28125 | 4 in. x 4 in. x 8 ft. #2 Premium Grade Fir Dimensional Lumber |
-| plywood/23-32x4x8 | 1 | top;length=72,width=36 | 23/32 in. x 4 ft. x 8 ft. BC Sanded Pine Plywood |
+| lumber/2x6x8 | 4 | side-apron;length=25.0, long-apron;length=61.0 | 2x6, 8 ft. (1-1/2 x 5-1/2 x 96 in.) |
+| lumber/4x4x8 | 4 | leg;length=29.28125 | 4x4, 8 ft. (3-1/2 x 3-1/2 x 96 in.) |
+| plywood/3-4x4x8 | 1 | top;length=72,width=36 | 3/4 in. plywood, 4 x 8 ft. (sold as 23/32 in.; 23/32 x 48 x 96 in.) |
 
 <br/><br/>
 
