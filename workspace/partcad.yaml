@@ -3,13 +3,13 @@ partcad: ">=0.8.167"  # 'map:' on parts, and enrich port expressions over 'with'
 # Two forms, one per PartCAD (see "Serving two PartCADs at once" in PartCAD's
 # documentation), so that raising 'partcad:' takes the desk away from nobody.
 #
-# From 0.10.7 a part is bought through a loaded alias of it that names a vendor
+# From 0.10.8 a part is bought through a loaded alias of it that names a vendor
 # and an SKU, and each store is handed the SKU it sells it as. So the desk is
 # cut from the standard sizes, which nobody sells as such, and bought from
 # whichever of the stores below is asked: both publish aliases of those sizes.
 #
 # Before it, the desk is cut from Home Depot's products, as it always was.
-{% set by_size = partcad_version_major is defined and partcad_version_at_least("0.10.7") %}
+{% set by_size = partcad_version_major is defined and partcad_version_at_least("0.10.8") %}
 {% if by_size %}
 {% set lumber_stock = "//pub/std/imperial/dimensional-lumber/stock:lumber/" %}
 {% set plywood_stock = "//pub/std/imperial/dimensional-lumber/stock:plywood/3-4x4x8" %}
@@ -33,7 +33,7 @@ docs:
     this package lists as its suppliers, publish an alias of it with their own
     SKU, and the lumber is bought from whichever store is asked, as that
     store's SKU. The screws are Home Depot's, and Lowe's sells the same ones.
-    (This is PartCAD 0.10.7 and later. An older PartCAD cuts the desk from
+    (This is PartCAD 0.10.8 and later. An older PartCAD cuts the desk from
     Home Depot's products and buys it there.)
 
   usage: |
