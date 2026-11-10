@@ -8,8 +8,8 @@ to size with a saw and nothing else.
 Every component is an instance of the standard size it is
 (`//pub/std/imperial/dimensional-lumber`), and names the store product it is
 cut from (`//pub/svc/commerce/homedepot`) as its stock, with where the saw
-cuts it. `pc test` checks that cutting that product there leaves exactly the
-component, and the store's SKUs are what the lumber is bought as.
+cuts it. `pc qual test` checks that cutting that product there leaves exactly
+the component, and the store's SKUs are what the lumber is bought as.
 
 
 ## Usage
@@ -23,7 +23,7 @@ with the rest (or `pc render -t html -a :imperial-desk-1` for a web page).
 ```shell
 pc inspect :imperial-desk-1
 pc inspect -p length=60 -p width=30 -p height=30 :imperial-desk-1
-pc test -f manufacturability :imperial-desk-1
+pc qual test -f manufacturability :imperial-desk-1
 ```
 
 
