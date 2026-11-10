@@ -2,14 +2,17 @@
 
 Basic furniture for low demand workspace environments
 
-Furniture made of dimensional lumber and plywood from The Home Depot, cut
-to size with a saw and nothing else.
+Furniture made of dimensional lumber and plywood from The Home Depot or
+Lowe's, cut to size with a saw and nothing else.
 
 Every component is an instance of the standard size it is
-(`//pub/std/imperial/dimensional-lumber`), and names the store product it is
-cut from (`//pub/svc/commerce/homedepot`) as its stock, with where the saw
-cuts it. `pc qual test` checks that cutting that product there leaves exactly
-the component, and the store's SKUs are what the lumber is bought as.
+(`//pub/std/imperial/dimensional-lumber`), and names the size it is cut
+from (`//pub/std/imperial/dimensional-lumber/stock`) as its stock, with
+where the saw cuts it. `pc qual test` checks that cutting that size there leaves
+exactly the component. The size is nobody's product: both stores, which
+this package lists as its suppliers, publish an alias of it with their own
+SKU, and the lumber is bought from whichever store is asked, as that
+store's SKU. The screws are Home Depot's, and Lowe's sells the same ones.
 
 
 ## Usage
@@ -24,7 +27,13 @@ with the rest (or `pc render -t html -a :imperial-desk-1` for a web page).
 pc inspect :imperial-desk-1
 pc inspect -p length=60 -p width=30 -p height=30 :imperial-desk-1
 pc qual test -f manufacturability :imperial-desk-1
+pc supply quote --provider //pub/svc/commerce/homedepot:homedepot :imperial-desk-1
+pc supply quote --provider //pub/svc/commerce/lowes:lowes :imperial-desk-1
 ```
+
+Without `--provider`, each line is bought from the first of the two stores
+that has it; `--cheapest` asks both what each line costs and buys it
+where it is cheaper.
 
 
 ## Assemblies
